@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:todo_list_app/utils/errors/custom_errors.dart';
 
 final class HttpResponse<T> {
   final int statusCode;
@@ -41,12 +42,16 @@ class DioHttp implements HttpClient {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    final response = await _dio.get(path, queryParameters: queryParameters);
+    try {
+      final response = await _dio.get(path, queryParameters: queryParameters);
 
-    return HttpResponse<T>(
-      statusCode: response.statusCode ?? 404,
-      data: response.data,
-    );
+      return HttpResponse<T>(
+        statusCode: response.statusCode ?? 404,
+        data: response.data,
+      );
+    } on DioException catch (error, stackTrace) {
+      throw ClientHttpError(message: error.toString(), stackTrace: stackTrace);
+    }
   }
 
   @override
@@ -55,16 +60,20 @@ class DioHttp implements HttpClient {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    final response = await _dio.post(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
+    try {
+      final response = await _dio.post(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
 
-    return HttpResponse(
-      statusCode: response.statusCode ?? 404,
-      data: response.data,
-    );
+      return HttpResponse(
+        statusCode: response.statusCode ?? 404,
+        data: response.data,
+      );
+    } on DioException catch (error, stackTrace) {
+      throw ClientHttpError(message: error.toString(), stackTrace: stackTrace);
+    }
   }
 
   @override
@@ -73,16 +82,20 @@ class DioHttp implements HttpClient {
     dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
-    final response = await _dio.put(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
+    try {
+      final response = await _dio.put(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
 
-    return HttpResponse(
-      statusCode: response.statusCode ?? 404,
-      data: response.data,
-    );
+      return HttpResponse(
+        statusCode: response.statusCode ?? 404,
+        data: response.data,
+      );
+    } on DioException catch (error, stackTrace) {
+      throw ClientHttpError(message: error.toString(), stackTrace: stackTrace);
+    }
   }
 
   @override
@@ -90,11 +103,18 @@ class DioHttp implements HttpClient {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    final response = await _dio.delete(path, queryParameters: queryParameters);
+    try {
+      final response = await _dio.delete(
+        path,
+        queryParameters: queryParameters,
+      );
 
-    return HttpResponse(
-      statusCode: response.statusCode ?? 404,
-      data: response.data,
-    );
+      return HttpResponse(
+        statusCode: response.statusCode ?? 404,
+        data: response.data,
+      );
+    } on DioException catch (error, stackTrace) {
+      throw ClientHttpError(message: error.toString(), stackTrace: stackTrace);
+    }
   }
 }

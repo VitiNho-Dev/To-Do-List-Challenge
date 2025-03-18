@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:todo_list_app/app/data/services/api_client.dart';
+import 'package:todo_list_app/data/services/api_client.dart';
 import 'package:todo_list_app/utils/errors/custom_errors.dart';
 import 'package:todo_list_app/utils/errors/error_messages.dart';
 import 'package:todo_list_app/utils/http_client.dart';
@@ -50,6 +50,18 @@ void main() {
       verify(() => httpClient.get('$baseUrl/todos')).called(1);
     });
 
+    test('should return an error when response is empty', () async {
+      mockHttpClientResponse(statusCode: 200, data: {});
+
+      final result = await apiClient.getTasks();
+
+      expect(result, isA<Error>());
+      final error = (result as Error).error as ApiError;
+      expect(error.message, ErrorMessages.emptyResponse);
+
+      verify(() => httpClient.get('$baseUrl/todos')).called(1);
+    });
+
     test('should return an error when unable to get tasks', () async {
       mockHttpClientResponse(statusCode: 500, data: '');
 
@@ -58,7 +70,6 @@ void main() {
       expect(result, isA<Error>());
       final error = (result as Error).error as ApiError;
       expect(error.message, ErrorMessages.unableToGetTasks);
-      expect(error.statusCode, 500);
 
       verify(() => httpClient.get('$baseUrl/todos')).called(1);
     });
@@ -83,18 +94,6 @@ void main() {
       expect(result, isA<Error>());
       final error = (result as Error).error as UnexpectedError;
       expect(error.message, ErrorMessages.unexpected);
-
-      verify(() => httpClient.get('$baseUrl/todos')).called(1);
-    });
-
-    test('should return an error when response is empty', () async {
-      mockHttpClientResponse(statusCode: 200, data: {});
-
-      final result = await apiClient.getTasks();
-
-      expect(result, isA<Error>());
-      final error = (result as Error).error as ApiError;
-      expect(error.message, ErrorMessages.emptyResponse);
 
       verify(() => httpClient.get('$baseUrl/todos')).called(1);
     });

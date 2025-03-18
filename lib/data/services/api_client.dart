@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import '../../../utils/errors/custom_errors.dart';
-import '../../../utils/errors/error_messages.dart';
-import '../../../utils/http_client.dart';
-import '../../../utils/result.dart';
+import '../../utils/errors/custom_errors.dart';
+import '../../utils/errors/error_messages.dart';
+import '../../utils/http_client.dart';
+import '../../utils/result.dart';
 
 const String baseUrl = 'https://dummyjson.com';
 
@@ -20,24 +20,14 @@ class ApiClient {
         final data = response.data as Map;
 
         if (data.isEmpty) {
-          return Result.error(
-            ApiError(
-              message: ErrorMessages.emptyResponse,
-              statusCode: response.statusCode,
-            ),
-          );
+          return Result.error(ApiError(message: ErrorMessages.emptyResponse));
         }
 
         return Result.ok(data as Map<String, dynamic>);
       } else {
         log('GET /todos failed with status: ${response.statusCode}');
 
-        return Result.error(
-          ApiError(
-            message: ErrorMessages.unableToGetTasks,
-            statusCode: response.statusCode,
-          ),
-        );
+        return Result.error(ApiError(message: ErrorMessages.unableToGetTasks));
       }
     } on ClientHttpError catch (error, stackTrace) {
       log('ClientHttpError: ${error.toString()}', stackTrace: stackTrace);

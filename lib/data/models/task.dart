@@ -3,7 +3,7 @@ class Task {
   final String title;
   final bool completed;
 
-  const Task({required this.id, required this.title, required this.completed});
+  const Task({this.id = 0, required this.title, this.completed = false});
 
   Task copyWith({int? id, String? title, bool? completed}) {
     return Task(
@@ -16,7 +16,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'] as int,
-      title: json['title'] as String,
+      title: json['todo'] as String,
       completed: json['completed'] as bool,
     );
   }
