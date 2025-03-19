@@ -10,11 +10,19 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
 
   HomeViewmodel(this._taskRepository) : super(HomeStateEmpty());
 
-  (List<Task>, List<Task>) _filterTheList(List<Task> tasks) {
+  ({List<Task> notCompleted, List<Task> completed}) _filterTheList(
+    List<Task> tasks,
+  ) {
     final notCompleted = tasks.where((t) => t.completed == false).toList();
     final completed = tasks.where((t) => t.completed == true).toList();
 
-    return (notCompleted, completed);
+    return (notCompleted: notCompleted, completed: completed);
+  }
+
+  void fetchTaksUpdated(List<Task> tasks) {
+    final (:notCompleted, :completed) = _filterTheList(tasks);
+
+    value = HomeStateSuccess(notCompleted, completed);
   }
 
   Future<void> getTasks() async {
@@ -25,9 +33,9 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
     switch (result) {
       case Ok<List<Task>>():
         {
-          final tasks = _filterTheList(result.value);
+          final (:notCompleted, :completed) = _filterTheList(result.value);
 
-          value = HomeStateSuccess(tasks.$1, tasks.$2);
+          value = HomeStateSuccess(notCompleted, completed);
         }
       case Error():
         {
@@ -41,8 +49,18 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
 
     final result = _taskRepository.createTask(task);
 
-    final tasks = _filterTheList(result);
+    final (:notCompleted, :completed) = _filterTheList(result);
 
-    value = HomeStateSuccess(tasks.$1, tasks.$2);
+    value = HomeStateSuccess(notCompleted, completed);
+  }
+
+  void updateTask(Task task) {
+    final newTask = task.copyWith(completed: !task.completed);
+
+    final result = _taskRepository.updateTask(newTask);
+
+    final (:notCompleted, :completed) = _filterTheList(result);
+
+    value = HomeStateSuccess(notCompleted, completed);
   }
 }

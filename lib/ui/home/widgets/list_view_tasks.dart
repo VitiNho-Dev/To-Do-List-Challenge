@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:todo_list_app/data/models/task.dart';
-import 'package:todo_list_app/ui/core/themes/colors.dart';
-import 'package:todo_list_app/ui/home/widgets/card_item.dart';
+
+import '../../../data/models/task.dart';
+import '../../core/themes/colors.dart';
+import 'card_item.dart';
 
 class ListViewTasks extends StatelessWidget {
   final List<Task> tasks;
+  final void Function(Task)? onChanged;
+  final void Function(Task) navigateToDetail;
 
-  const ListViewTasks({super.key, required this.tasks});
+  const ListViewTasks({
+    super.key,
+    required this.tasks,
+    this.onChanged,
+    required this.navigateToDetail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +33,17 @@ class ListViewTasks extends StatelessWidget {
             itemCount: tasks.length,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
+              final task = tasks[index];
+
               return CardItem(
                 color: AppColorsDark.darkBlue3,
-                title: Text(tasks[index].title),
-                icon: Icon(Icons.circle, size: 28),
+                title: Text(task.title),
+                dueDate: task.dueDate,
+                onTap: () => navigateToDetail(task),
+                icon: InkWell(
+                  onTap: () => onChanged!(task),
+                  child: Icon(Icons.circle, size: 28),
+                ),
               );
             },
           ),

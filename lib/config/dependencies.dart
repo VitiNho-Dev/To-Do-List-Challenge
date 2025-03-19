@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:todo_list_app/ui/details/view_models/detail_viewmodel.dart';
 
 import '../data/repositories/task_repository.dart';
 import '../data/services/api_client.dart';
@@ -15,4 +16,5 @@ void initDependencies() {
     TaskRepositoryImpl(apiClient: getIt()),
   );
   getIt.registerSingleton<HomeViewmodel>(HomeViewmodel(getIt()));
+  getIt.registerSingleton<DetailViewmodel>(DetailViewmodel(getIt()));
 }

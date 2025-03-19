@@ -2,14 +2,21 @@ class Task {
   final int id;
   final String title;
   final bool completed;
+  final DateTime? dueDate;
 
-  const Task({this.id = 0, required this.title, this.completed = false});
+  const Task({
+    this.id = 0,
+    required this.title,
+    this.completed = false,
+    this.dueDate,
+  });
 
-  Task copyWith({int? id, String? title, bool? completed}) {
+  Task copyWith({int? id, String? title, bool? completed, DateTime? dueDate}) {
     return Task(
       id: id ?? this.id,
       title: title ?? this.title,
       completed: completed ?? this.completed,
+      dueDate: dueDate ?? this.dueDate,
     );
   }
 
@@ -19,9 +26,5 @@ class Task {
       title: json['todo'] as String,
       completed: json['completed'] as bool,
     );
-  }
-
-  static Map<String, dynamic> toJson(Task task) {
-    return {'title': task.title, 'completed': task.completed};
   }
 }

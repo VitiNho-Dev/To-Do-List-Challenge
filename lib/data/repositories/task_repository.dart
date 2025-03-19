@@ -10,7 +10,7 @@ abstract interface class TaskRepository {
   Future<Result<List<Task>>> fetchTasksFromApi();
   List<Task> createTask(Task task);
   List<Task> updateTask(Task task);
-  void deleteTask(int id);
+  List<Task> deleteTask(int id);
 }
 
 class TaskRepositoryImpl implements TaskRepository {
@@ -75,7 +75,7 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  void deleteTask(int id) {
+  List<Task> deleteTask(int id) {
     final index = _getIndex(id);
     if (index == null) {
       throw RepositoryError(message: ErrorMessages.taskNotFound);
@@ -83,5 +83,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
     final removedTask = localTasks.removeAt(index);
     log('Task deleted: $removedTask. Total tasks: ${localTasks.length}');
+
+    return localTasks;
   }
 }

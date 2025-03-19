@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
-import 'circular_button.dart';
+import '../../core/widgets/circular_button.dart';
+import '../../core/widgets/custom_icons.dart';
 
 class CustomTextField extends StatelessWidget implements PreferredSizeWidget {
-  final void Function(String)? onSubmitted;
+  final void Function()? onTap;
+  final TextEditingController controller;
   final EdgeInsetsGeometry? padding;
 
-  const CustomTextField({super.key, this.onSubmitted, this.padding});
+  const CustomTextField({
+    super.key,
+    this.padding,
+    this.onTap,
+    required this.controller,
+  });
 
   @override
   Size get preferredSize => Size(double.infinity, 0);
@@ -16,12 +23,15 @@ class CustomTextField extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: padding ?? EdgeInsets.zero,
       child: TextField(
-        onSubmitted: onSubmitted,
+        controller: controller,
         decoration: InputDecoration(
           hintText: "Add Item",
           suffixIcon: Padding(
             padding: const EdgeInsets.only(top: 5, right: 10, bottom: 5),
-            child: CircularButton(),
+            child: CircularButton(
+              onTap: onTap,
+              child: CustomIcon(icon: Icon(Icons.add)),
+            ),
           ),
         ),
       ),
