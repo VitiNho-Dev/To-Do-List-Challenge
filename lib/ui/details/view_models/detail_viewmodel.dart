@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_app/data/models/task.dart';
-import 'package:todo_list_app/data/repositories/task_repository.dart';
-import 'package:todo_list_app/utils/errors/error_messages.dart';
 
+import '../../../data/models/task.dart';
+import '../../../data/repositories/task_repository.dart';
+import '../../../utils/errors/custom_errors.dart';
+import '../../../utils/errors/error_messages.dart';
+import '../../../utils/result.dart';
 import 'states/detail_state.dart';
 
 class DetailViewmodel extends ValueNotifier<DetailState> {
@@ -13,22 +15,34 @@ class DetailViewmodel extends ValueNotifier<DetailState> {
   void updateTask(Task task) {
     final result = _taskRepository.updateTask(task);
 
-    if (result.isNotEmpty) {
-      value = DetailStateSuccess(tasks: result);
-      return;
+    switch (result) {
+      case Ok<List<Task>>():
+        value = DetailStateSuccess(tasks: result.value);
+        return;
+      case Error():
+        if (result.error is RepositoryError) {
+          value = DetailStateError(message: result.error.message);
+          return;
+        }
+        value = DetailStateError(message: ErrorMessages.taskNotUpdated);
+        return;
     }
-
-    value = DetailStateError(message: ErrorMessages.taskNotUpdated);
   }
 
   void deleteTask(Task task) {
     final result = _taskRepository.deleteTask(task.id);
 
-    if (result.isNotEmpty) {
-      value = DetailStateSuccess(tasks: result);
-      return;
+    switch (result) {
+      case Ok<List<Task>>():
+        value = DetailStateSuccess(tasks: result.value);
+        break;
+      case Error():
+        if (result.error is RepositoryError) {
+          value = DetailStateError(message: result.error.message);
+          break;
+        }
+        value = DetailStateError(message: ErrorMessages.taskNotDeleted);
+        break;
     }
-
-    value = DetailStateError(message: ErrorMessages.taskNotDeleted);
   }
 }

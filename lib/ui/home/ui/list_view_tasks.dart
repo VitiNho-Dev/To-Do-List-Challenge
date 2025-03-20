@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
 import '../../../data/models/task.dart';
-import '../../core/themes/colors.dart';
-import 'card_item.dart';
+import '../../core/widgets/card_item_not_completed.dart';
 
 class ListViewTasks extends StatelessWidget {
   final List<Task> tasks;
-  final void Function(Task)? onChanged;
+  final void Function(Task)? taskStatusUpdate;
   final void Function(Task) navigateToDetail;
 
   const ListViewTasks({
     super.key,
     required this.tasks,
-    this.onChanged,
+    this.taskStatusUpdate,
     required this.navigateToDetail,
   });
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -26,7 +27,7 @@ class ListViewTasks extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
-            child: Text("TO DO", style: TextStyle(fontSize: 16)),
+            child: Text("TO DO", style: textStyle.bodyMedium),
           ),
           ListView.builder(
             shrinkWrap: true,
@@ -35,15 +36,11 @@ class ListViewTasks extends StatelessWidget {
             itemBuilder: (context, index) {
               final task = tasks[index];
 
-              return CardItem(
-                color: AppColorsDark.darkBlue3,
-                title: Text(task.title),
+              return CardItemNotCompleted(
+                title: task.title,
                 dueDate: task.dueDate,
                 onTap: () => navigateToDetail(task),
-                icon: InkWell(
-                  onTap: () => onChanged!(task),
-                  child: Icon(Icons.circle, size: 28),
-                ),
+                onTapIcon: () => taskStatusUpdate!(task),
               );
             },
           ),

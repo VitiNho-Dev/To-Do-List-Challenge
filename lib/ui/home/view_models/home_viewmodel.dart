@@ -35,6 +35,11 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
         {
           final (:notCompleted, :completed) = _filterTheList(result.value);
 
+          if (notCompleted.isEmpty && completed.isEmpty) {
+            value = HomeStateEmpty();
+            return;
+          }
+
           value = HomeStateSuccess(notCompleted, completed);
         }
       case Error():
@@ -44,8 +49,8 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
     }
   }
 
-  void addTask(String nameTask) {
-    final task = Task(title: nameTask);
+  void addTask(String titleTask) {
+    final task = Task(title: titleTask);
 
     final result = _taskRepository.createTask(task);
 
@@ -55,12 +60,22 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
   }
 
   void updateTask(Task task) {
-    final newTask = task.copyWith(completed: !task.completed);
+    final newTask = task.copyWith(
+      completed: !task.completed,
+      dueDate: task.dueDate,
+    );
 
     final result = _taskRepository.updateTask(newTask);
 
-    final (:notCompleted, :completed) = _filterTheList(result);
+    switch (result) {
+      case Ok<List<Task>>():
+        final (:notCompleted, :completed) = _filterTheList(result.value);
 
-    value = HomeStateSuccess(notCompleted, completed);
+        value = HomeStateSuccess(notCompleted, completed);
+        return;
+      case Error():
+        value = HomeStateError(result.error);
+        return;
+    }
   }
 }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../../../utils/format_date.dart';
-import '../../core/themes/colors.dart';
-import '../../core/widgets/custom_icons.dart';
+import '../themes/colors.dart';
+import 'custom_icons.dart';
 
 class CustomDatePicker extends StatefulWidget {
-  final DateTime? dueDate;
+  final DateTime? date;
   final void Function(DateTime? date)? onChanged;
 
-  const CustomDatePicker({super.key, this.onChanged, this.dueDate});
+  const CustomDatePicker({super.key, this.onChanged, this.date});
 
   @override
   State<CustomDatePicker> createState() => _CustomDatePickerState();
@@ -20,7 +20,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   @override
   void initState() {
     super.initState();
-    selectedDate = widget.dueDate ?? DateTime.now();
+    selectedDate = widget.date ?? DateTime.now();
   }
 
   Future<void> _selectDate() async {
@@ -34,9 +34,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
     );
 
     if (pickedDate != null) {
-      setState(() {
-        selectedDate = pickedDate;
-      });
+      selectedDate = pickedDate;
     }
 
     if (widget.onChanged != null) {
@@ -47,12 +45,13 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   @override
   Widget build(BuildContext context) {
     var formattedDate = formatDate(selectedDate);
+    final color = AppColors.of(context);
 
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: AppColorsDark.darkBlue1,
+        color: color.secondary,
       ),
       child: Row(
         spacing: 8,
@@ -61,7 +60,9 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
           Text(formattedDate),
           InkWell(
             onTap: _selectDate,
-            child: CustomIcon(icon: Icon(Icons.calendar_month)),
+            child: CustomIcon(
+              icon: Icon(Icons.calendar_month, color: color.accent),
+            ),
           ),
         ],
       ),

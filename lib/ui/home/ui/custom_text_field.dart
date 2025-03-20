@@ -6,6 +6,7 @@ import '../../core/widgets/custom_icons.dart';
 class CustomTextField extends StatelessWidget implements PreferredSizeWidget {
   final void Function()? onTap;
   final TextEditingController controller;
+  final String? Function(String?)? validator;
   final EdgeInsetsGeometry? padding;
 
   const CustomTextField({
@@ -13,6 +14,7 @@ class CustomTextField extends StatelessWidget implements PreferredSizeWidget {
     this.padding,
     this.onTap,
     required this.controller,
+    this.validator,
   });
 
   @override
@@ -22,14 +24,16 @@ class CustomTextField extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: padding ?? EdgeInsets.zero,
-      child: TextField(
+      child: TextFormField(
         controller: controller,
+        validator: validator,
         decoration: InputDecoration(
-          hintText: "Add Item",
+          hintText: "Adicionar Item",
           suffixIcon: Padding(
             padding: const EdgeInsets.only(top: 5, right: 10, bottom: 5),
             child: CircularButton(
               onTap: onTap,
+              padding: EdgeInsets.all(8),
               child: CustomIcon(icon: Icon(Icons.add)),
             ),
           ),

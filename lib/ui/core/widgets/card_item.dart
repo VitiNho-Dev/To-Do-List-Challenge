@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list_app/utils/format_date.dart';
 
+import '../themes/colors.dart';
+
 class CardItem extends StatelessWidget {
-  final Text title;
+  final String title;
+  final bool lineThrough;
   final Widget icon;
   final DateTime? dueDate;
   final double? elevation;
@@ -17,10 +20,14 @@ class CardItem extends StatelessWidget {
     this.elevation,
     this.color,
     this.onTap,
+    this.lineThrough = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final textStyle = Theme.of(context).textTheme;
+    final appColor = AppColors.of(context);
+
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -33,15 +40,32 @@ class CardItem extends StatelessWidget {
               Expanded(
                 child: Row(
                   spacing: 16,
-                  children: [icon, Expanded(child: title)],
+                  children: [
+                    icon,
+                    Expanded(
+                      child: Text(
+                        title,
+                        style:
+                            !lineThrough
+                                ? textStyle.bodyLarge
+                                : textStyle.bodyLarge!.copyWith(
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if (dueDate != null)
                 Row(
                   spacing: 4,
                   children: [
-                    Icon(Icons.calendar_month),
-                    Text(formatDate(dueDate)),
+                    Icon(
+                      Icons.calendar_month,
+                      size: 20,
+                      color: appColor.accent,
+                    ),
+                    Text(formatDate(dueDate), style: textStyle.bodySmall),
                   ],
                 ),
             ],

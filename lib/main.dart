@@ -7,7 +7,7 @@ import 'ui/core/themes/app_theme.dart';
 import 'ui/details/ui/details_screen.dart';
 import 'ui/details/view_models/detail_viewmodel.dart';
 import 'ui/home/view_models/home_viewmodel.dart';
-import 'ui/home/widgets/home_screen.dart';
+import 'ui/home/ui/home_screen.dart';
 
 void main() {
   initDependencies();
@@ -21,8 +21,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
+      darkTheme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme,
       initialRoute: Routes.home,
       routes: {
         Routes.home:

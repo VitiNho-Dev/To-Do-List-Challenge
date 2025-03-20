@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_app/ui/details/ui/content_topic_widget.dart';
-import 'package:todo_list_app/ui/home/widgets/card_item.dart';
 
-import '../../core/themes/colors.dart';
+import '../../core/widgets/card_item_completed.dart';
+import '../../core/widgets/card_item_not_completed.dart';
+import 'content_topic_widget.dart';
 
 class StatusWidget extends StatefulWidget {
   final bool status;
@@ -39,32 +39,8 @@ class _StatusWidgetState extends State<StatusWidget> {
         },
         child:
             completed
-                ? CardItem(
-                  title: Text('Tarefa concluída'),
-                  elevation: 0,
-                  color: AppColorsDark.darkBlue4,
-                  icon: Container(
-                    height: 28,
-                    width: 28,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: AppColorsDark.lightGreen,
-                    ),
-                    child: Icon(Icons.check, color: AppColorsDark.green),
-                  ),
-                )
-                : CardItem(
-                  title: Text('Tarefa não concluída'),
-                  color: AppColorsDark.darkBlue3,
-                  icon: Container(
-                    height: 28,
-                    width: 28,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: AppColorsDark.white,
-                    ),
-                  ),
-                ),
+                ? CardItemCompleted(title: 'Tarefa concluída')
+                : CardItemNotCompleted(title: 'Tarefa não concluída'),
       ),
     );
   }

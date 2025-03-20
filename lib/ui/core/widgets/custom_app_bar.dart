@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../themes/colors.dart';
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
   final PreferredSizeWidget? bottom;
@@ -11,6 +13,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(bottom: bottom, leading: leading);
+    final color = AppColors.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: color.background,
+        boxShadow: [
+          BoxShadow(
+            color: color.accent.withValues(alpha: 0.1),
+            blurRadius: 2,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: AppBar(bottom: bottom, leading: leading),
+    );
   }
 }

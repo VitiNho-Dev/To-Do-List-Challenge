@@ -16,7 +16,7 @@ class Task {
       id: id ?? this.id,
       title: title ?? this.title,
       completed: completed ?? this.completed,
-      dueDate: dueDate ?? this.dueDate,
+      dueDate: dueDate,
     );
   }
 
