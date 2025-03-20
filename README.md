@@ -1,16 +1,50 @@
-# todo_list_app
+# 📱 To-Do List App
 
-A new Flutter project.
+Um aplicativo de lista de tarefas desenvolvido em Flutter, com o objetivo de demonstrar minhas habilidades no desenvolvimento de aplicativos na prática. Este projeto foi implementado da melhor forma possível dentro do tempo disponível e de acordo com a proposta do desafio técnico.
 
-## Getting Started
+## 📸 Screenshots
 
-This project is a starting point for a Flutter application.
+Aqui estão algumas capturas de tela do aplicativo:
 
-A few resources to get you started if this is your first Flutter project:
+<div style="display: flex; justify-content: center; gap: 10px;">
+  <img src="assets/print_home_page.png" alt="Tela inicial do app" width="300">
+  <img src="assets/print_detail_page.png" alt="Tela de detalhes da tarefa" width="300">
+</div>
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ⚙️ Execução do App
+
+Na aba *Debug* do VS Code, há um arquivo de configuração para executar o aplicativo em três modos:  
+- **Debug Mode**  
+- **Profile Mode**  
+- **Release Mode**  
+
+## 🚀 Funcionalidades
+
+- ✅ Adicionar uma tarefa  
+- ✅ Marcar como concluída  
+- ✅ Editar uma tarefa  
+- ✅ Adicionar uma data de finalização  
+- ✅ Remover uma tarefa  
+
+## 🛠️ Tecnologias e Padrões Utilizados
+
+- **Dio** – Para realizar requisições HTTP  
+- **GetIt** – Para gerenciamento de injeção de dependências  
+- **Mocktail** – Para testes de unidade  
+- **App Architecture** – Padrão de arquitetura recomendado pela equipe do Flutter  
+- **Result** – Para trabalhar com múltiplos retornos  
+- **State Pattern com ValueNotifier** – Para gerenciamento de estados das telas  
+- **ThemeExtension** – Para suportar temas claro e escuro  
+- **Singleton** – Para armazenar a lista de tarefas e suas alterações durante a execução do app  
+- **Failures** – Interface criada para definir erros específicos, proporcionando mais clareza sobre as falhas no aplicativo  
+
+## 🔧 Melhorias Futuras
+
+Se tivesse mais tempo, eu implementaria:  
+
+- **Armazenamento local** para salvar a lista de tarefas  
+- **Sistema de notificações** para lembrar o usuário quando uma tarefa estiver próxima da data de finalização  
+- **Internacionalização** para melhorar a organização e facilitar a manutenção e adição de novos textos no app  
+
+---
