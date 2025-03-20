@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../themes/colors.dart';
+import '../themes/app_colors.dart';
 import 'card_item.dart';
 import 'circular_button.dart';
 

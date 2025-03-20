@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:todo_list_app/utils/errors/custom_errors.dart';
+
+import 'errors/custom_errors.dart';
 
 final class HttpResponse<T> {
   final int statusCode;
@@ -35,7 +36,7 @@ abstract interface class HttpClient {
 class DioHttp implements HttpClient {
   final Dio _dio;
 
-  const DioHttp(this._dio);
+  const DioHttp({required Dio dio}) : _dio = dio;
 
   @override
   Future<HttpResponse<T>> get<T>(

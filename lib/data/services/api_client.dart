@@ -8,13 +8,13 @@ import '../../utils/result.dart';
 const String baseUrl = 'https://dummyjson.com';
 
 class ApiClient {
-  final HttpClient _httpClient;
+  final HttpClient _http;
 
-  const ApiClient({required HttpClient httpClient}) : _httpClient = httpClient;
+  const ApiClient({required HttpClient http}) : _http = http;
 
   Future<Result<Map<String, dynamic>>> getTasks() async {
     try {
-      final response = await _httpClient.get('$baseUrl/todos');
+      final response = await _http.get('$baseUrl/todos');
 
       if (response.statusCode == 200) {
         final data = response.data as Map;

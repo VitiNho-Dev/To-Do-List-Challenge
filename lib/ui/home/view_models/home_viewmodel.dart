@@ -8,7 +8,9 @@ import 'states/home_state.dart';
 class HomeViewmodel extends ValueNotifier<HomeState> {
   final TaskRepository _taskRepository;
 
-  HomeViewmodel(this._taskRepository) : super(HomeStateEmpty());
+  HomeViewmodel({required TaskRepository taskRepository})
+    : _taskRepository = taskRepository,
+      super(HomeStateEmpty());
 
   ({List<Task> notCompleted, List<Task> completed}) _filterTheList(
     List<Task> tasks,
@@ -20,6 +22,11 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
   }
 
   void fetchTaksUpdated(List<Task> tasks) {
+    if (tasks.isEmpty) {
+      value = HomeStateEmpty();
+      return;
+    }
+
     final (:notCompleted, :completed) = _filterTheList(tasks);
 
     value = HomeStateSuccess(notCompleted, completed);
@@ -32,20 +39,18 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
 
     switch (result) {
       case Ok<List<Task>>():
-        {
-          final (:notCompleted, :completed) = _filterTheList(result.value);
+        final (:notCompleted, :completed) = _filterTheList(result.value);
 
-          if (notCompleted.isEmpty && completed.isEmpty) {
-            value = HomeStateEmpty();
-            return;
-          }
-
-          value = HomeStateSuccess(notCompleted, completed);
+        if (notCompleted.isEmpty && completed.isEmpty) {
+          value = HomeStateEmpty();
+          break;
         }
+
+        value = HomeStateSuccess(notCompleted, completed);
+        break;
       case Error():
-        {
-          value = HomeStateError(result.error);
-        }
+        value = HomeStateError(result.error);
+        break;
     }
   }
 
@@ -72,10 +77,10 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
         final (:notCompleted, :completed) = _filterTheList(result.value);
 
         value = HomeStateSuccess(notCompleted, completed);
-        return;
+        break;
       case Error():
         value = HomeStateError(result.error);
-        return;
+        break;
     }
   }
 }

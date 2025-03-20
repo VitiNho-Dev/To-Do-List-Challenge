@@ -21,16 +21,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      themeMode: ThemeMode.light,
+      themeMode: ThemeMode.system,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
       initialRoute: Routes.home,
       routes: {
-        Routes.home:
-            (context) => HomeScreen(viewmodel: GetIt.instance<HomeViewmodel>()),
-        Routes.details:
-            (context) =>
-                DetailScreen(viewmodel: GetIt.instance<DetailViewmodel>()),
+        Routes.home: (context) {
+          return HomeScreen(viewmodel: GetIt.instance<HomeViewmodel>());
+        },
+        Routes.details: (context) {
+          return DetailScreen(viewmodel: GetIt.instance<DetailViewmodel>());
+        },
       },
     );
   }

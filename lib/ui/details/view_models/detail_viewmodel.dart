@@ -10,7 +10,9 @@ import 'states/detail_state.dart';
 class DetailViewmodel extends ValueNotifier<DetailState> {
   final TaskRepository _taskRepository;
 
-  DetailViewmodel(this._taskRepository) : super(DetailStateEmpty());
+  DetailViewmodel({required TaskRepository taskRepository})
+    : _taskRepository = taskRepository,
+      super(DetailStateEmpty());
 
   void updateTask(Task task) {
     final result = _taskRepository.updateTask(task);
@@ -18,14 +20,14 @@ class DetailViewmodel extends ValueNotifier<DetailState> {
     switch (result) {
       case Ok<List<Task>>():
         value = DetailStateSuccess(tasks: result.value);
-        return;
+        break;
       case Error():
         if (result.error is RepositoryError) {
           value = DetailStateError(message: result.error.message);
-          return;
+          break;
         }
         value = DetailStateError(message: ErrorMessages.taskNotUpdated);
-        return;
+        break;
     }
   }
 

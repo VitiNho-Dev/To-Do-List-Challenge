@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_app/utils/format_date.dart';
 
-import '../themes/colors.dart';
+import '../../../utils/format_date.dart';
+import '../themes/app_colors.dart';
 
 class CardItem extends StatelessWidget {
   final String title;

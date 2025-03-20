@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-@immutable
 class AppColors extends ThemeExtension<AppColors> {
   final Color background;
   final Color primary;

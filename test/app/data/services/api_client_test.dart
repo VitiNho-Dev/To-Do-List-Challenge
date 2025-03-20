@@ -14,7 +14,7 @@ void main() {
 
   setUp(() {
     httpClient = HttpClientMock();
-    apiClient = ApiClient(httpClient: httpClient);
+    apiClient = ApiClient(http: httpClient);
   });
 
   void mockHttpClientResponse({

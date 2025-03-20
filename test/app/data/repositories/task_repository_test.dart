@@ -4,6 +4,7 @@ import 'package:todo_list_app/data/models/task.dart';
 import 'package:todo_list_app/data/repositories/task_repository.dart';
 import 'package:todo_list_app/data/services/api_client.dart';
 import 'package:todo_list_app/utils/errors/custom_errors.dart';
+import 'package:todo_list_app/utils/errors/error_messages.dart';
 import 'package:todo_list_app/utils/result.dart';
 
 class ApiClientMock extends Mock implements ApiClient {}
@@ -69,6 +70,7 @@ void main() {
         final task = Task(id: 1, title: 'Task 1', completed: false);
 
         final result = taskRepository.createTask(task);
+
         expect(result.length, 1);
         expect(result[0].id, 1);
         expect(result[0].title, 'Task 1');
@@ -83,10 +85,15 @@ void main() {
 
         final updatedTask = Task(id: 1, title: 'Task 1', completed: false);
         final result = taskRepository.updateTask(updatedTask);
-        expect(result.length, 1);
-        expect(result[0].id, 1);
-        expect(result[0].title, 'Task 1');
-        expect(result[0].completed, false);
+
+        expect(result, isA<Ok<List<Task>>>());
+
+        final tasks = (result as Ok<List<Task>>).value;
+
+        expect(tasks.length, 1);
+        expect(tasks[0].id, 1);
+        expect(tasks[0].title, 'Task 1');
+        expect(tasks[0].completed, false);
       });
 
       test("should throw an error when updating a non-existent task", () async {
@@ -94,10 +101,15 @@ void main() {
         taskRepository.localTasks = [task];
 
         final updatedTask = Task(id: 2, title: 'Task 2', completed: false);
-        expect(
-          () => taskRepository.updateTask(updatedTask),
-          throwsA(isA<RepositoryError>()),
-        );
+
+        final result = taskRepository.updateTask(updatedTask);
+
+        expect(result, isA<Error>());
+
+        final error = (result as Error).error;
+
+        expect(error, isA<RepositoryError>());
+        expect(error.message, ErrorMessages.taskNotFound);
       });
     });
 
@@ -114,10 +126,14 @@ void main() {
         final task = Task(id: 1, title: 'Task 1', completed: false);
         taskRepository.localTasks = [task];
 
-        expect(
-          () => taskRepository.deleteTask(2),
-          throwsA(isA<RepositoryError>()),
-        );
+        final result = taskRepository.deleteTask(2);
+
+        expect(result, isA<Error>());
+
+        final error = (result as Error).error;
+
+        expect(error, isA<RepositoryError>());
+        expect(error.message, ErrorMessages.taskNotFound);
       });
     });
   });
