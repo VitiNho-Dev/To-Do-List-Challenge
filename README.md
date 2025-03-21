@@ -25,7 +25,8 @@ Na aba *Debug* do VS Code, há um arquivo de configuração para executar o apli
 - ✅ Marcar como concluída  
 - ✅ Editar uma tarefa  
 - ✅ Adicionar uma data de finalização  
-- ✅ Remover uma tarefa  
+- ✅ Remover a data de finalização
+- ✅ Deletar uma tarefa  
 
 ## 🛠️ Tecnologias e Padrões Utilizados
 
@@ -37,7 +38,8 @@ Na aba *Debug* do VS Code, há um arquivo de configuração para executar o apli
 - **State Pattern com ValueNotifier** – Para gerenciamento de estados das telas  
 - **ThemeExtension** – Para suportar temas claro e escuro  
 - **Singleton** – Para armazenar a lista de tarefas e suas alterações durante a execução do app  
-- **Failures** – Interface criada para definir erros específicos, proporcionando mais clareza sobre as falhas no aplicativo  
+- **Failures** – Interface criada para definir erros específicos, proporcionando mais clareza sobre as falhas no aplicativo
+- **Testes de Unidade** - Os testes validam a lógica de negócios, como a adição, edição, remoção e conclusão de tarefas, além do tratamento de erros e estados.  
 
 ## 🔧 Melhorias Futuras
 
