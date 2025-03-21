@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../../../data/models/task.dart';
 import '../../core/widgets/card_item_not_completed.dart';
+import '../../core/widgets/custom_show_dialog.dart';
 
 class ListViewTasks extends StatelessWidget {
   final List<Task> tasks;
   final void Function(Task)? taskStatusUpdate;
   final void Function(Task) navigateToDetail;
+  final void Function(Task) excludeTask;
 
   const ListViewTasks({
     super.key,
     required this.tasks,
     this.taskStatusUpdate,
     required this.navigateToDetail,
+    required this.excludeTask,
   });
 
   @override
@@ -27,7 +30,7 @@ class ListViewTasks extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 16, top: 16, right: 16),
-            child: Text("TO DO", style: textStyle.bodyMedium),
+            child: Text("PENDENTE", style: textStyle.bodyMedium),
           ),
           ListView.builder(
             shrinkWrap: true,
@@ -41,6 +44,14 @@ class ListViewTasks extends StatelessWidget {
                 dueDate: task.dueDate,
                 onTap: () => navigateToDetail(task),
                 onTapIcon: () => taskStatusUpdate!(task),
+                onLongPress: () {
+                  CustomAlertDialog.showAlertDialog(
+                    context,
+                    title: 'Excluir tarefa',
+                    content: task.title,
+                    onTap: () => excludeTask(task),
+                  );
+                },
               );
             },
           ),

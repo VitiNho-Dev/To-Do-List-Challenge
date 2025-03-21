@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+import '../../../utils/errors/custom_errors.dart';
+import '../../../utils/errors/error_messages.dart';
 import '../../../utils/result.dart';
 import '../../../data/models/task.dart';
 import '../../../data/repositories/task_repository.dart';
@@ -29,7 +31,7 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
 
     final (:notCompleted, :completed) = _filterTheList(tasks);
 
-    value = HomeStateSuccess(notCompleted, completed);
+    value = HomeStateSuccess(tasks: notCompleted, completedTasks: completed);
   }
 
   Future<void> getTasks() async {
@@ -46,10 +48,17 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
           break;
         }
 
-        value = HomeStateSuccess(notCompleted, completed);
+        value = HomeStateSuccess(
+          tasks: notCompleted,
+          completedTasks: completed,
+        );
         break;
       case Error():
-        value = HomeStateError(result.error);
+        if (result.error is RepositoryError) {
+          value = HomeStateError(message: result.error.message);
+          break;
+        }
+        value = HomeStateError(message: ErrorMessages.taskNotDeleted);
         break;
     }
   }
@@ -61,7 +70,7 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
 
     final (:notCompleted, :completed) = _filterTheList(result);
 
-    value = HomeStateSuccess(notCompleted, completed);
+    value = HomeStateSuccess(tasks: notCompleted, completedTasks: completed);
   }
 
   void updateTask(Task task) {
@@ -76,10 +85,39 @@ class HomeViewmodel extends ValueNotifier<HomeState> {
       case Ok<List<Task>>():
         final (:notCompleted, :completed) = _filterTheList(result.value);
 
-        value = HomeStateSuccess(notCompleted, completed);
+        value = HomeStateSuccess(
+          tasks: notCompleted,
+          completedTasks: completed,
+        );
         break;
       case Error():
-        value = HomeStateError(result.error);
+        if (result.error is RepositoryError) {
+          value = HomeStateError(message: result.error.message);
+          break;
+        }
+        value = HomeStateError(message: ErrorMessages.taskNotDeleted);
+        break;
+    }
+  }
+
+  void deleteTask(Task task) {
+    final result = _taskRepository.deleteTask(task.id);
+
+    switch (result) {
+      case Ok<List<Task>>():
+        final (:notCompleted, :completed) = _filterTheList(result.value);
+
+        value = HomeStateSuccess(
+          tasks: notCompleted,
+          completedTasks: completed,
+        );
+        break;
+      case Error():
+        if (result.error is RepositoryError) {
+          value = HomeStateError(message: result.error.message);
+          break;
+        }
+        value = HomeStateError(message: ErrorMessages.taskNotDeleted);
         break;
     }
   }

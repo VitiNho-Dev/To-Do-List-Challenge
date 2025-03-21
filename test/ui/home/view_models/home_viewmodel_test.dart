@@ -64,8 +64,7 @@ void main() {
         expect(viewmodel.value, isA<HomeStateError>());
 
         final state = viewmodel.value as HomeStateError;
-        expect(state.error, isA<RepositoryError>());
-        expect(state.error.message, ErrorMessages.taskNotFound);
+        expect(state.message, ErrorMessages.taskNotFound);
       });
 
       test(
@@ -146,11 +145,68 @@ void main() {
         expect(viewmodel.value, isA<HomeStateError>());
 
         final state = viewmodel.value as HomeStateError;
-        expect(state.error, isA<RepositoryError>());
-        expect(state.error.message, ErrorMessages.taskNotFound);
+
+        expect(state.message, ErrorMessages.taskNotFound);
 
         verify(() => taskRepository.updateTask(any())).called(1);
       });
+    });
+
+    group('deleteTask', () {
+      test('should delete a task and return new task list', () {
+        when(
+          () => taskRepository.deleteTask(any()),
+        ).thenAnswer((_) => Result.ok(tasks));
+
+        final task = Task(id: 1, title: 'Task 1', completed: true);
+
+        viewmodel.deleteTask(task);
+        expect(viewmodel.value, isA<HomeStateSuccess>());
+
+        final state = viewmodel.value as HomeStateSuccess;
+        expect(state.tasks.isNotEmpty, true);
+
+        verify(() => taskRepository.deleteTask(any())).called(1);
+      });
+
+      test('should return a HomeStateError on type RepositoryError', () {
+        when(() => taskRepository.deleteTask(any())).thenAnswer(
+          (_) => Result.error(
+            RepositoryError(message: ErrorMessages.taskNotFound),
+          ),
+        );
+
+        final task = Task(id: -1, title: 'Task 1', completed: true);
+
+        viewmodel.deleteTask(task);
+        expect(viewmodel.value, isA<HomeStateError>());
+
+        final state = viewmodel.value as HomeStateError;
+        expect(state.message, ErrorMessages.taskNotFound);
+
+        verify(() => taskRepository.deleteTask(any())).called(1);
+      });
+
+      test(
+        'should return a HomeStateError when type is different from type RepositoryError',
+        () {
+          when(() => taskRepository.deleteTask(any())).thenAnswer(
+            (_) => Result.error(
+              UnexpectedError(message: ErrorMessages.unexpected),
+            ),
+          );
+
+          final task = Task(id: -1, title: 'Task 1', completed: true);
+
+          viewmodel.deleteTask(task);
+          expect(viewmodel.value, isA<HomeStateError>());
+
+          final state = viewmodel.value as HomeStateError;
+          expect(state.message, ErrorMessages.taskNotDeleted);
+
+          verify(() => taskRepository.deleteTask(any())).called(1);
+        },
+      );
     });
   });
 }

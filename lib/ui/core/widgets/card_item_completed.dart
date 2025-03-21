@@ -10,6 +10,7 @@ class CardItemCompleted extends StatelessWidget {
   final DateTime? dueDate;
   final void Function()? onTap;
   final void Function()? onTapIcon;
+  final void Function()? onLongPress;
 
   const CardItemCompleted({
     super.key,
@@ -18,6 +19,7 @@ class CardItemCompleted extends StatelessWidget {
     this.dueDate,
     this.onTap,
     this.onTapIcon,
+    this.onLongPress,
   });
 
   @override
@@ -31,6 +33,7 @@ class CardItemCompleted extends StatelessWidget {
       color: color.cardCompleted,
       dueDate: dueDate,
       onTap: onTap,
+      onLongPress: onLongPress,
       icon: CircularButton(
         onTap: onTapIcon,
         height: 28,

@@ -87,10 +87,7 @@ class _HomeScreenState extends State<HomeScreen> with Validators {
               return const Center(child: CircularProgressIndicator());
             } else if (value is HomeStateError) {
               return Center(
-                child: Text(
-                  value.error.message,
-                  style: theme.textTheme.bodyLarge,
-                ),
+                child: Text(value.message, style: theme.textTheme.bodyLarge),
               );
             } else if (value is HomeStateEmpty) {
               return Center(
@@ -108,12 +105,20 @@ class _HomeScreenState extends State<HomeScreen> with Validators {
                       tasks: value.tasks,
                       navigateToDetail: navigateToTaskDetail,
                       taskStatusUpdate: viewmodel.updateTask,
+                      excludeTask: (task) {
+                        viewmodel.deleteTask(task);
+                        Navigator.pop(context);
+                      },
                     ),
                     if (value.completedTasks != null)
                       ListViewTasksCompleted(
                         tasks: value.completedTasks!,
                         navigateToTaskDetail: navigateToTaskDetail,
                         taskStatusUpdate: viewmodel.updateTask,
+                        excludeTask: (task) {
+                          viewmodel.deleteTask(task);
+                          Navigator.pop(context);
+                        },
                       ),
                   ],
                 ),

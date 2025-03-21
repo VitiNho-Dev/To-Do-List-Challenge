@@ -11,6 +11,7 @@ class CardItem extends StatelessWidget {
   final double? elevation;
   final Color? color;
   final void Function()? onTap;
+  final void Function()? onLongPress;
 
   const CardItem({
     super.key,
@@ -20,6 +21,7 @@ class CardItem extends StatelessWidget {
     this.elevation,
     this.color,
     this.onTap,
+    this.onLongPress,
     this.lineThrough = false,
   });
 
@@ -30,6 +32,7 @@ class CardItem extends StatelessWidget {
 
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Card(
         elevation: elevation,
         color: color,
